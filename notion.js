@@ -17,10 +17,11 @@ const spinnerLoopRate = 500; // Make this a bit lower if the method sometimes do
 
 (function () {
   var wasSpinnerActive = false;
-
-  document.onfocus = function() { console.log("oghhh")}
+  var breakSpinnerLoop = false;
 
   function spinnerLoop() {
+    if (breakSpinnerLoop) return;
+
     var spinner = document.getElementsByClassName(spinnerClassName)[0];
 
     if (spinner === undefined) {
@@ -70,5 +71,18 @@ const spinnerLoopRate = 500; // Make this a bit lower if the method sometimes do
     emoji.parentElement.style.width = smallEmojiBoxSize;
   }
 
+  document.onfocus = function() {
+    if (breakSpinnerLoop === true)
+    {
+      breakSpinnerLoop = false;
+      spinnerLoop();
+    }
+  } 
+
+  document.onblur = function() { 
+    breakSpinnerLoop = true 
+  }
+
   spinnerLoop();
+
 })();
