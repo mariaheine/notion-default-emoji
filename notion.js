@@ -2,7 +2,7 @@
 // @name     Notion Default Emoji
 // @version  1
 // @grant    none
-// @include http://www.notion.so/*
+// @include https://www.notion.so/*
 // ==/UserScript==
 
 // Class names
@@ -13,7 +13,7 @@ const emojiClassName = "notion-emoji";
 const makeSmallEmojiBigger = true;
 const smallEmojiBoxSize = "25px";
 const smallEmojiFontSize = "18px";
-const spinnerLoopRate = 500; // Make this a bit lower if the method sometimes doesnt work for you
+const spinnerLoopRate = 15; // Make this a bit lower if the method sometimes doesnt work for you
 
 (function () {
   var wasSpinnerActive = false;
@@ -29,10 +29,10 @@ const spinnerLoopRate = 500; // Make this a bit lower if the method sometimes do
         clearEmojis(document);
       }
       wasSpinnerActive = false;
-      window.setTimeout(spinnerLoop, 500);
+      window.setTimeout(spinnerLoop, spinnerLoopRate);
     } else {
       wasSpinnerActive = true;
-      window.setTimeout(spinnerLoop, 500);
+      window.setTimeout(spinnerLoop, spinnerLoopRate);
     }
   }
 
