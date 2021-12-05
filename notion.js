@@ -5,84 +5,67 @@
 // @include https://www.notion.so/*
 // ==/UserScript==
 
-// Class names
-const spinnerClassName = "loading-spinner";
-const emojiClassName = "notion-emoji";
+// @ts-check
 
-// Settings
-const makeSmallEmojiBigger = true;
-const smallEmojiBoxSize = "25px";
-const smallEmojiFontSize = "18px";
-const spinnerLoopRate = 15; // Make this a bit lower if the method sometimes doesnt work for you
+( function()
+{
 
-(function () {
-  var wasSpinnerActive = false;
-  var breakSpinnerLoop = false;
+  const emojiClassName = "notion-emoji";
+  const refreshRate = 100;
 
-  function spinnerLoop() {
-    if (breakSpinnerLoop) return;
+  let breakSpinnerLoop = false;
 
-    var spinner = document.getElementsByClassName(spinnerClassName)[0];
+  emojiClearLoop();
 
-    if (spinner === undefined) {
-      if (wasSpinnerActive == true) {
-        clearEmojis(document);
-      }
-      wasSpinnerActive = false;
-      window.setTimeout(spinnerLoop, spinnerLoopRate);
-    } else {
-      wasSpinnerActive = true;
-      window.setTimeout(spinnerLoop, spinnerLoopRate);
-    }
+  function emojiClearLoop()
+  {
+    /* ⭐ ---- ---- */
+    
+    if ( breakSpinnerLoop ) return;
+    var emojis = document.getElementsByClassName( emojiClassName );
+    clearSrcFields( emojis );
+    window.setTimeout( emojiClearLoop, refreshRate );
+    
+    /* ---- ---- 🌠 */
   }
 
-  function clearEmojis(element) {
-    var emojis = element.getElementsByClassName(emojiClassName);
-    clearSrcFields(emojis);
-  }
-
-  function clearSrcFields(images) {
-    Array.prototype.forEach.call(images, (image) => {
+  function clearSrcFields( images )
+  {
+    /* ⭐ ---- ---- */
+    
+    Array.prototype.forEach.call( images, ( image ) =>
+    {
 
       image.src = "";
       image.style.background = null;
 
-      if (makeSmallEmojiBigger) enlargeSmallEmoji(image);
-
-      /* 
-      This part handles the emojis in Notion which are missing "notion-emoji" class name,
-      but which are always next to an unused <img> with such class name.
-      */
-      var nextSibling = image.nextSibling;
-      if (nextSibling !== null) {
-        if (nextSibling.tagName === "IMG") {
-          nextSibling.src = "";
-          nextSibling.parentElement.style.fontSize = nextSibling.style.width;
-        }
-      }
-    });
+    } );
+    
+    /* ---- ---- 🌠 */
   }
 
-  function enlargeSmallEmoji(emoji)
+  // * I am not sure if this optimization really is important
+  // * But hey here it is! 🎈
+  document.onfocus = function()
   {
-    emoji.parentElement.style.lineHeight = null;
-    emoji.parentElement.style.fontSize = smallEmojiFontSize;
-    emoji.parentElement.style.height = smallEmojiBoxSize;
-    emoji.parentElement.style.width = smallEmojiBoxSize;
-  }
-
-  document.onfocus = function() {
-    if (breakSpinnerLoop === true)
+    /* ⭐ ---- ---- */
+    
+    if ( breakSpinnerLoop === true )
     {
       breakSpinnerLoop = false;
-      spinnerLoop();
+      emojiClearLoop();
     }
-  } 
-
-  document.onblur = function() { 
-    breakSpinnerLoop = true 
+    
+    /* ---- ---- 🌠 */
   }
 
-  spinnerLoop();
+  document.onblur = function()
+  {
+    /* ⭐ ---- ---- */
+    
+    breakSpinnerLoop = true
+    
+    /* ---- ---- 🌠 */
+  }
 
-})();
+} )();
