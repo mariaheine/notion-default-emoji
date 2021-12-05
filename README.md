@@ -21,3 +21,5 @@ Currently works only on Firefox (with Greasemonkey extenstion), could be easily 
 2. Opene its menu and press `New user script...`
 3. Paste contents of `notion.js` inside of the opened window
 4. Save and refresh Notion page
+
+/* *fin* 🐒 */
