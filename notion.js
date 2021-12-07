@@ -11,7 +11,7 @@
 {
 
   const emojiClassName = "notion-emoji";
-  const refreshRate = 100;
+  const refreshRate = 10;
 
   let breakSpinnerLoop = false;
 
@@ -20,7 +20,7 @@
   function emojiClearLoop()
   {
     /* ⭐ ---- ---- */
-    
+
     if ( breakSpinnerLoop ) return;
     var emojis = document.getElementsByClassName( emojiClassName );
     clearSrcFields( emojis );
@@ -38,6 +38,18 @@
 
       image.src = "";
       image.style.background = null;
+
+      /* 
+      This part handles the emojis in Notion which are missing "notion-emoji" class name,
+      but which are always next to an unused <img> with such class name.
+      */
+      let nextSibling = image.nextSibling;
+      if (nextSibling !== null) {
+        if (nextSibling.tagName == "IMG") {
+          nextSibling.src = "";
+          nextSibling.parentElement.style.fontSize = nextSibling.style.width;
+        }
+      }
 
     } );
     
